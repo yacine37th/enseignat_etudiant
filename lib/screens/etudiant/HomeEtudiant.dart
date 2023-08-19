@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/etudiant/AddStufs.dart';
+import 'package:flutter_application_1/screens/etudiant/EmploiDuTempsDowload.dart';
+import 'package:flutter_application_1/screens/etudiant/Profil.dart';
+import 'package:flutter_application_1/screens/etudiant/TelechargerDoc.dart';
 
 class HomeEtudiant extends StatefulWidget {
   const HomeEtudiant({super.key});
@@ -57,19 +60,16 @@ class _HomeEtudiantState extends State<HomeEtudiant>
 
   final screens =[
   AddStufs(),
-  AddStufs(),
-  AddStufs(),
-  AddStufs(),
+  TelechargerDoc(),
+  EmploiDuTempsDowload(),
+  Profile()
    
   ];
   static const IconData subscriptions = IconData(0xe618, fontFamily: 'MaterialIcons');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text("Etudiant"),
-      ),
+     
        bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         // selectedIconTheme:  IconThemeData(
@@ -92,20 +92,20 @@ class _HomeEtudiantState extends State<HomeEtudiant>
             // backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Electronic Orders',
+            icon: Icon(Icons.document_scanner),
+            label: 'Cours',
             // backgroundColor: Colors.green,
           ),
          BottomNavigationBarItem(
-             icon: Icon(Icons.business_center_outlined),
-            label: 'Waraqi Orders',
+             icon: Icon(Icons.table_chart),
+            label: 'Emploi Du Temps',
             // backgroundColor: Colors.purple,
           ),
           BottomNavigationBarItem(
             // icon: Icon(Icons.settings),
             // label: 'Settings',
-             icon: Icon(subscriptions),
-            label: 'Subscription',
+             icon: Icon(Icons.person_2),
+            label: 'Profil',
             // backgroundColor: Colors.pink,
           ),
            

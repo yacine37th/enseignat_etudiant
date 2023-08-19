@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +20,11 @@ class _AjouterEmploiState extends State<AjouterEmploi>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
-
 
   final categoryName = TextEditingController();
 
@@ -69,10 +66,21 @@ class _AjouterEmploiState extends State<AjouterEmploi>
     super.initState();
   }
 
-  
-
-  File? categorieImage;
+  PlatformFile? pickFile;
   UploadTask? uploadTask;
+  UploadTask? uploadTask2;
+  File? categorieImage;
+  File? bookImage;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null) return;
+    setState(() {
+      pickFile = result.files.first;
+    });
+  }
+
+  // File? categorieImage;
+  // UploadTask? uploadTask;
 
   Future pickimage() async {
     try {
@@ -90,26 +98,44 @@ class _AjouterEmploiState extends State<AjouterEmploi>
     }
   }
 
+
+   
+
   var db = FirebaseFirestore.instance;
   Future DepositionNew() async {
-    var emploiTemps = db.collection("emploiTemps").doc(data);
-    final path = 'emploiTemps/${emploiTemps.id}';
-    final file = File(categorieImage!.path);
+    var emploiTemps = db.collection("emploiTemps").doc();
+
+
+    // final path = 'emploiTemps/${emploiTemps.id}';
+    // final file = File(categorieImage!.path);
+
+    // final ref = FirebaseStorage.instance.ref().child(path);
+    // uploadTask = ref.putFile(file);
+
+    // final snapshot = await uploadTask!.whenComplete(() => {});
+
+    // final catepic = await snapshot.ref.getDownloadURL();
+    // print(
+    //     "bookThumnail /////////////////////////////////////////////////////////////////////");
+    // print(catepic);
+
+    final path = 'emploiTemps/${pickFile!.name}';
+    final file = File(pickFile!.path!);
 
     final ref = FirebaseStorage.instance.ref().child(path);
     uploadTask = ref.putFile(file);
 
     final snapshot = await uploadTask!.whenComplete(() => {});
 
-    final catepic = await snapshot.ref.getDownloadURL();
+    final bookURL = await snapshot.ref.getDownloadURL();
     print(
-        "bookThumnail /////////////////////////////////////////////////////////////////////");
-    print(catepic);
+        "urlDowload /////////////////////////////////////////////////////////////////////");
+    print(bookURL);
 
     emploiTemps.set({
       "emploiID": emploiTemps.id,
       "emploiAbout": categoryName.text,
-      "emploiPic": catepic,
+      "emploiPic": bookURL,
     }).onError((e, _) => print(
         "Error writing document /////////////////////////////////////////////: $e"));
   }
@@ -119,7 +145,7 @@ class _AjouterEmploiState extends State<AjouterEmploi>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Ajouter une Nouvelle justification "),
+        title: Text("Ajouter un nouveau emploi du temps "),
       ),
       body: SafeArea(
         child: Center(
@@ -134,47 +160,42 @@ class _AjouterEmploiState extends State<AjouterEmploi>
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter the justification About';
+                        return 'Entrer qlq chose a propos de ce emploi du temps';
                       }
                       return null;
                     },
                     controller: categoryName,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: "Entrer la description d'abscence",
+                      hintText: "Entrer description de cet emploi du temps"
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
-                    onPressed: () => pickimage(),
-                    child: const Text('Select Picture of the Categorie'),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
+                    onPressed: () => selectFile(),
+                    child: const Text("Séléctionner le fichier d'emploi du temps"),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => {
                       if (_formKey.currentState!.validate())
                         {
                           // addNewCategorie(),
                           DepositionNew(),
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeEnsi()),
-                            (Route<dynamic> route) => false,
-                          )
+                          Navigator.of(context).pop(),
                         }
                     },
-                    child: const Text('Submit'),
+                    child: const Text('Envoyer'),
                   ),
                 ),
               ],

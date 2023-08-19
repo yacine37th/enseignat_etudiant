@@ -45,15 +45,12 @@ class _MyAppState extends State<MyApp> {
   var user = FirebaseAuth.instance.currentUser;
   var data;
   bool de = false;
-  bool isLogin = true;
+  bool isLogin = false;
   bool login = false;
   Future islog() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
-        setState(() {
-          isLogin = false;
-        });
         print(isLogin);
 //       Navigator.pushReplacement(
 // context,MaterialPageRoute(builder: (context) => SingIn()),);
@@ -67,37 +64,9 @@ class _MyAppState extends State<MyApp> {
         print(user.uid);
         print(isLogin);
 
-        FirebaseFirestore.instance
-            .collection('Users')
-            .doc(user.uid)
-            .get()
-            .then((snapshot) {
-          // Use ds as a snapshot
-          setState(() {
-            data = snapshot.data()!;
-            print('Values from db /////////////////////////////////: ' +
-                data["TypeUser"]);
-          });
-
-          if (data["TypeUser"] == "etudiant") {
-            print('etudiant');
-            setState(() {
-              de = true;
-            });
-            Get.back();
-          } else {
-            print('ensignant');
-            setState(() {
-              de = true;
-            });
-            Get.back();
-
-          }
-
-          // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
-        });
       }
     });
+  
   }
 
   @override
@@ -115,7 +84,7 @@ class _MyAppState extends State<MyApp> {
       // defaultTransition: Transition.cupertino,
       // theme: Themes.customLightTheme,
       // textDirection: MainFunctions.textDirection,
-      // home: isLogin
+      home: isLogin ? HomeScreen() : SingIn(),
       //     ? HomeScreen()
       //     // de
       //     //     ? HomeEtudiant()
@@ -135,7 +104,7 @@ class _MyAppState extends State<MyApp> {
           page: () => const SingIn(),
         ),
       ],
-    initialRoute:  FirebaseAuth.instance.currentUser == null ? "/login" : "/home"
+    // initialRoute:  isLogin ? "/home" : "/login"
       // initialRoute: isLogin ? "/home" :
       //  "/login",
 

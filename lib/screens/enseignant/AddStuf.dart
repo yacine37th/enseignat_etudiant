@@ -25,10 +25,26 @@ class _AddStufState extends State<AddStuf> with SingleTickerProviderStateMixin {
     _controller.dispose();
     super.dispose();
   }
+  Route route = MaterialPageRoute(builder: (context) => SingIn());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+           appBar: AppBar(
+        elevation: 0,
+        title: Text("Enseignant"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              //  Navigator.of(context).pop();
+              Navigator.pushReplacement(context, route);
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -58,20 +74,20 @@ class _AddStufState extends State<AddStuf> with SingleTickerProviderStateMixin {
                           builder: (context) => const AjouterCours()));
                 },
                 child: Text("Ajouter Cours")),
-            ElevatedButton(
-                style: ButtonStyle(
-                    // backgroundColor:  MaterialStateProperty.all(Color.fromRGBO(32, 48, 61, 1))
+            // ElevatedButton(
+            //     style: ButtonStyle(
+            //         // backgroundColor:  MaterialStateProperty.all(Color.fromRGBO(32, 48, 61, 1))
 
-                    ),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => SingIn()),
-                    (Route<dynamic> route) => false,
-                  );
-                },
-                child: Text("logout")),
+            //         ),
+            //     onPressed: () async {
+            //       await FirebaseAuth.instance.signOut();
+            //       Navigator.pushAndRemoveUntil(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => SingIn()),
+            //         (Route<dynamic> route) => false,
+            //       );
+            //     },
+            //     child: Text("logout")),
           ],
         ),
       ),

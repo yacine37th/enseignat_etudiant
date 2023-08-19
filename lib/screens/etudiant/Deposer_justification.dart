@@ -86,7 +86,9 @@ class _DeposerState extends State<Deposer> with SingleTickerProviderStateMixin {
 
   var db = FirebaseFirestore.instance;
   Future DepositionNew() async {
-    var justifications = db.collection("justifications").doc(data);
+        var doc = db.collection("Users").doc(data);
+
+    var justifications = db.collection("justifications").doc();
     final path = 'justifications/${justifications.id}';
     final file = File(categorieImage!.path);
 
@@ -100,7 +102,12 @@ class _DeposerState extends State<Deposer> with SingleTickerProviderStateMixin {
         "bookThumnail /////////////////////////////////////////////////////////////////////");
     print(catepic);
 
+ doc.update({
+      "justificationID": justifications.id,
+    }).onError((e, _) => print(
+        "Error writing document /////////////////////////////////////////////: $e"));
     justifications.set({
+      "userID" : doc.id,
       "justificationID": justifications.id,
       "justificationAbout": categoryName.text,
       "justificationPic": catepic,
@@ -113,7 +120,7 @@ class _DeposerState extends State<Deposer> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Ajouter une Nouvelle justification "),
+        title: Text("Ajouter une justification d'absence"),
       ),
       body: SafeArea(
         child: Center(
@@ -142,33 +149,29 @@ class _DeposerState extends State<Deposer> with SingleTickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => pickimage(),
-                    child: const Text('Select Picture of the Categorie'),
+                    child: const Text('Selectionner la photo de la justification'),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => {
                       if (_formKey.currentState!.validate())
                         {
                           // addNewCategorie(),
                           DepositionNew(),
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeEtudiant()),
-                            (Route<dynamic> route) => false,
-                          )
-                        }
+                        
+                        },
+                        Navigator.of(context).pop(),
                     },
-                    child: const Text('Submit'),
+                    child: const Text('Envoyer'),
                   ),
                 ),
               ],

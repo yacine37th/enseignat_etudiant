@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/SingIn.dart';
 import 'package:flutter_application_1/screens/enseignant/AddStuf.dart';
+import 'package:flutter_application_1/screens/enseignant/Justification.dart';
+import 'package:flutter_application_1/screens/enseignant/Students.dart';
 
 class HomeEnsi extends StatefulWidget {
   const HomeEnsi({super.key});
@@ -24,6 +27,7 @@ class _HomeEnsiState extends State<HomeEnsi>
     _controller.dispose();
     super.dispose();
   }
+
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
@@ -54,69 +58,65 @@ class _HomeEnsiState extends State<HomeEnsi>
     });
   }
 
-  final screens =[
-  AddStuf(),
-  AddStuf(),
-  AddStuf(),
-  AddStuf(),
-   
+  final screens = [
+    AddStuf(),
+    Students(),
+    Justification(),
   ];
-  static const IconData subscriptions = IconData(0xe618, fontFamily: 'MaterialIcons');
-
+  static const IconData subscriptions =
+      IconData(0xe618, fontFamily: 'MaterialIcons');
+  Route route = MaterialPageRoute(builder: (context) => SingIn());
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text("Enseig"),
-      ),
-        bottomNavigationBar: BottomNavigationBar(
+    return Scaffold(
+     
+     
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   title: Text("Enseig"),
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         // selectedIconTheme:  IconThemeData(
         //   color:  Color.fromRGBO(32, 48, 61, 1),
-                  
-                
+
         // ),
 
         // unselectedIconTheme: IconThemeData(
         //   color:  Colors.blackS
-                  
-                
+
         // ),
         // selectedIconTheme: IconThemeData(color: Colors.red),
         items: const <BottomNavigationBarItem>[
-          
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
             // backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Electronic Orders',
+            icon: Icon(Icons.person),
+            label: 'Etudiants',
             // backgroundColor: Colors.green,
           ),
-         BottomNavigationBarItem(
-             icon: Icon(Icons.business_center_outlined),
-            label: 'Waraqi Orders',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.offline_bolt),
+            label: 'Justifications',
             // backgroundColor: Colors.purple,
           ),
-          BottomNavigationBarItem(
-            // icon: Icon(Icons.settings),
-            // label: 'Settings',
-             icon: Icon(subscriptions),
-            label: 'Subscription',
-            // backgroundColor: Colors.pink,
-          ),
-           
+          // BottomNavigationBarItem(
+          //   // icon: Icon(Icons.settings),
+          //   // label: 'Settings',
+          //   icon: Icon(subscriptions),
+          //   label: 'Subscription',
+          //   // backgroundColor: Colors.pink,
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
       body: screens[_selectedIndex],
-      );
- 
+    );
   }
 }

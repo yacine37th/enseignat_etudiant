@@ -19,74 +19,17 @@ class _HomeScreenState extends State<HomeScreen>
 
   var db = FirebaseFirestore.instance;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _controller = AnimationController(vsync: this);
-  // }
-//    var user = FirebaseAuth.instance.currentUser;
-//   bool test =false ;
-//   @override
-//   void initState() {
-//     print(user);
-// //     if (user != null){
-// //       // ScaffoldMessenger.of(context).showSnackBar(
-// //       //   SnackBar(
-// //       //     content: Text('${user!.email} signed in'),
-// //       //   ),
-// //       // );
-// //       setState(() {
-// //         test = true;
-// //       });
-// //       print('login');
-// //       print(user);
-// //       // Navigator.push(
-// //       //   context,
-// //       //   MaterialPageRoute(builder: (context) => HomeScreen()),
-// //       // );
-// //     }else{
-// //           print('logout');
-// //  setState(() {
-// //           Navigator
-// //     .of(context)
-// //     .pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => SingIn()));
-// //  });
-
-// //     }
-// FirebaseAuth.instance
-//   .authStateChanges()
-//   .listen((User? user) {
-//     if (user == null) {
-//       print('User is currently signed out!');
-// //       Navigator.pushReplacement(
-// // context,MaterialPageRoute(builder: (context) => SingIn()),);
-// // Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
-//     } else {
-//       print('User is signed in!');
-//       setState(() {
-//         test = true;
-//       });
-
-//       //       // Navigator.push(
-// //       //   context,
-// //       //   MaterialPageRoute(builder: (context) => HomeScreen()),
-// //       // );
-
-//     }
-//   });
-//     super.initState();
-//   }
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
  var data;
-  bool de = false;
+  var de = false  ;
   bool isLogin = true;
   bool login = false;
     Future islog() async {
+      
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -99,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen>
 // Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
       } else {
         print('User is signed in!');
-        setState(() {
-          isLogin = true;
-        });
+        // setState(() {
+        //   isLogin = true;
+        // });
 
         print(user.uid);
         print(isLogin);
@@ -149,46 +92,14 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   title: Text("eded"),
-      // ),
-      body: de ? HomeEtudiant(): HomeEnsi() 
-     
-      //  SafeArea(
 
-      //   child: Center(
-      //       child: Column(
-      //     children: [
-      //       //  test ?  Center(child: Column(children: [
-      //       //   Text("${user}"),
-      //       //   TextButton(onPressed: () async{
-      //       //      await FirebaseAuth.instance.signOut();
-      //       //   }, child: Text('logout'))
-      //       //  ],))
-      //       //   :
-      //       Center(
-      //           child: Column(
-      //         children: [
-      //           Text('you need to login'),
-      //           TextButton(
-      //               onPressed: () {
-      //                 Navigator.push(context,
-      //                     MaterialPageRoute(builder: (context) => SingIn()));
-      //               },
-      //               child: Text("login")),
-      //           TextButton(
-      //               onPressed: () async {
-      //                 await FirebaseAuth.instance.signOut();
-      //               },
-      //               child: Text('logout')),
-      //           //  ],))
-      //         ],
-      //       ))
-      //       // await FirebaseAuth.instance.signOut();
-      //     ],
-      //   )),
-      // ),
+      body: de ? HomeEtudiant(): HomeEnsi()                
+
+
+       
+      //  
+     
+     
     );
   }
 }

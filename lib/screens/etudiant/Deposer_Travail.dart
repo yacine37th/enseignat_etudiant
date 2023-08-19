@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/screens/etudiant/HomeEtudiant.dart';
 import 'package:image_picker/image_picker.dart';
 
 class DeposerTravail extends StatefulWidget {
@@ -18,14 +17,14 @@ class DeposerTravail extends StatefulWidget {
 class _DeposerTravailState extends State<DeposerTravail>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
- final categoryName = TextEditingController();
+  final categoryName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
- var data;
+  var data;
   bool de = false;
   bool isLogin = true;
   bool login = false;
-    Future islog() async {
+  Future islog() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -45,7 +44,7 @@ class _DeposerTravailState extends State<DeposerTravail>
         print(user.uid);
         print(isLogin);
         setState(() {
-          data=user.uid;
+          data = user.uid;
         });
       }
     });
@@ -57,20 +56,20 @@ class _DeposerTravailState extends State<DeposerTravail>
     islog();
     super.initState();
   }
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-   File? categorieImage;
+  File? categorieImage;
   UploadTask? uploadTask;
 
-  
-   Future pickimage() async {
+  Future pickimage() async {
     try {
-      final categorieImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery,imageQuality: 85);
+      final categorieImage = await ImagePicker()
+          .pickImage(source: ImageSource.gallery, imageQuality: 85);
       if (categorieImage == null) return;
       final imageTemp = File(categorieImage.path);
       setState(() {
@@ -83,38 +82,43 @@ class _DeposerTravailState extends State<DeposerTravail>
     }
   }
 
-      var db = FirebaseFirestore.instance;
-Future DepositionNew() async {
-        var travails = db.collection("travails").doc(data);
-       final path = 'travails/${travails.id}';
-      final file = File(categorieImage!.path);
+  var db = FirebaseFirestore.instance;
+  Future DepositionNew() async {
+    var doc = db.collection("Users").doc(data);
+    var travails = db.collection("travails").doc();
+    final path = 'travails/${travails.id}';
+    final file = File(categorieImage!.path);
 
-      final ref = FirebaseStorage.instance.ref().child(path);
-      uploadTask = ref.putFile(file);
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putFile(file);
 
-      final snapshot = await uploadTask!.whenComplete(() => {});
+    final snapshot = await uploadTask!.whenComplete(() => {});
 
-      final catepic = await snapshot.ref.getDownloadURL();
-      print(
-          "bookThumnail /////////////////////////////////////////////////////////////////////");
-      print(catepic);
+    final catepic = await snapshot.ref.getDownloadURL();
+    print(
+        "bookThumnail /////////////////////////////////////////////////////////////////////");
+    print(catepic);
 
-
-
-
+    doc.update({
+      "traivailsIDS": FieldValue.arrayUnion([travails.id]),
+        "travailPic": catepic,
+    }).onError((e, _) => print(
+        "Error writing document /////////////////////////////////////////////: $e"));
     travails.set({
-      "travailID":travails.id,
-      "travailAbout" : categoryName.text,
-      "travailPic":catepic,
-    }).onError((e, _) => print("Error writing document /////////////////////////////////////////////: $e"));
+      "userID": doc.id,
+      "travailID": travails.id,
+      "travailAbout": categoryName.text,
+      "travailPic": catepic,
+    }).onError((e, _) => print(
+        "Error writing document /////////////////////////////////////////////: $e"));
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Ajouter une Nouvelle justification "),
+        title: Text("Ajouter un travail"),
       ),
       body: SafeArea(
         child: Center(
@@ -136,40 +140,35 @@ Future DepositionNew() async {
                     controller: categoryName,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: "Entrer la description d'abscence",
+                      hintText: "Entrer la description du travail",
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => pickimage(),
-                    child: const Text('Select Picture of the Categorie'),
+                    child:
+                        const Text('Selectionner la photo du travail'),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(32, 48, 61, 1))),
+                    // style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => {
                       if (_formKey.currentState!.validate())
                         {
-                          // addNewCategorie(),
                           DepositionNew(),
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeEtudiant()),
-                            (Route<dynamic> route) => false,
-                          )
-                        }
+                        },
+                      Navigator.of(context).pop(),
                     },
-                    child: const Text('Submit'),
+                    child: const Text('Envoyer'),
                   ),
                 ),
               ],
@@ -178,6 +177,5 @@ Future DepositionNew() async {
         ),
       ),
     );
- 
   }
 }

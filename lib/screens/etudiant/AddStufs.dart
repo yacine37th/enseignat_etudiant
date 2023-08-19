@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/SingIn.dart';
 import 'package:flutter_application_1/screens/etudiant/Deposer_Travail.dart';
 import 'package:flutter_application_1/screens/etudiant/Deposer_justification.dart';
 
@@ -26,9 +27,16 @@ class _AddStufsState extends State<AddStufs>
     super.dispose();
   }
 
+
+Route route = MaterialPageRoute(builder: (context) => SingIn());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        elevation: 0,
+        title: Text("Etudiant"),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -60,15 +68,17 @@ class _AddStufsState extends State<AddStufs>
                 },
                 child: Text("Déposer Mon travail")),
 
-                   ElevatedButton(
-               style: ButtonStyle(
-                  // backgroundColor:  MaterialStateProperty.all(Color.fromRGBO(32, 48, 61, 1))
+              //      ElevatedButton(
+              //  style: ButtonStyle(
+              //     // backgroundColor:  MaterialStateProperty.all(Color.fromRGBO(32, 48, 61, 1))
                   
-                  ),
-                               onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                child: Text("logout")),
+              //     ),
+              //                  onPressed: () async {
+              //         await FirebaseAuth.instance.signOut();
+              //             //  Navigator.of(context).pop();
+              //             Navigator.pushReplacement(context, route);
+              //       },
+              //   child: Text("logout")),
           
           ],
         ),
