@@ -60,7 +60,6 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           isLogin = true;
         });
-
         print(user.uid);
         print(isLogin);
 
@@ -79,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Warak',
+      title: 'E-student',
       debugShowCheckedModeBanner: false,
       // defaultTransition: Transition.cupertino,
       // theme: Themes.customLightTheme,
