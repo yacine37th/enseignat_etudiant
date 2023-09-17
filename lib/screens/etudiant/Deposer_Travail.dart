@@ -84,6 +84,7 @@ class _DeposerTravailState extends State<DeposerTravail>
 
   var db = FirebaseFirestore.instance;
   Future DepositionNew() async {
+    
     var doc = db.collection("Users").doc(data);
     var travails = db.collection("travails").doc();
     final path = 'travails/${travails.id}';
@@ -109,10 +110,13 @@ class _DeposerTravailState extends State<DeposerTravail>
       "travailID": travails.id,
       "travailAbout": categoryName.text,
       "travailPic": catepic,
+      "type" : type
     }).onError((e, _) => print(
         "Error writing document /////////////////////////////////////////////: $e"));
   }
 
+
+  String? type;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,6 +159,32 @@ class _DeposerTravailState extends State<DeposerTravail>
                         const Text('Selectionner la photo du travail'),
                   ),
                 ),
+
+
+
+RadioListTile(
+                      title: Text("TD"),
+                      value: "TD",
+                      groupValue: type,
+                      onChanged: (value) {
+                        setState(() {
+                          type = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("TP"),
+                      value: "TP",
+                      groupValue: type,
+                      onChanged: (value) {
+                        setState(() {
+                          type = value.toString();
+                        });
+                      },
+                    ),
+
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
@@ -162,7 +192,7 @@ class _DeposerTravailState extends State<DeposerTravail>
                     //     backgroundColor: MaterialStateProperty.all(
                     //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => {
-                      if (_formKey.currentState!.validate())
+                      if (_formKey.currentState!.validate() && type!="")
                         {
                           DepositionNew(),
                         },

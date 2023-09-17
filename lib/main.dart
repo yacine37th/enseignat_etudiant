@@ -5,7 +5,10 @@ import 'package:flutter_application_1/HomeScreen.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/screens/SingIn.dart';
 import 'package:flutter_application_1/screens/SingUp.dart';
+import 'package:flutter_application_1/screens/enseignant/AjouterNote.dart';
 import 'package:flutter_application_1/screens/enseignant/HomeEnseignant.dart';
+import 'package:flutter_application_1/screens/enseignant/StudentDetails.dart';
+import 'package:flutter_application_1/screens/enseignant/addtoGroup/AddToGroup.dart';
 import 'package:flutter_application_1/screens/etudiant/HomeEtudiant.dart';
 import 'package:get/get.dart';
 // import 'package:warak_admin/HomeScreen.dart';
@@ -100,6 +103,20 @@ class _MyAppState extends State<MyApp> {
           name: "/login",
           page: () => const SingIn(),
         ),
+             GetPage(
+          name: "/addToGroup",
+          page: () =>AddToGroup(),
+        ),
+
+            GetPage(
+          name: "/addNote",
+          page: () =>AjouterNote(),
+        ),
+
+        //    GetPage(
+        //   name: "/studentDetails",
+        //   page: () =>StudentDetails(),
+        // ),
       ],
       // initialRoute:  isLogin ? "/home" : "/login"
       // initialRoute: isLogin ? "/home" :

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/screens/SingIn.dart';
 import 'package:flutter_application_1/screens/enseignant/AddStuf.dart';
 import 'package:flutter_application_1/screens/enseignant/Justification.dart';
 import 'package:flutter_application_1/screens/enseignant/Students.dart';
+import 'package:flutter_application_1/screens/enseignant/addtoGroup/MyStudents.dart';
 
 class HomeEnsi extends StatefulWidget {
   const HomeEnsi({super.key});
@@ -61,6 +62,9 @@ class _HomeEnsiState extends State<HomeEnsi>
   final screens = [
     AddStuf(),
     Students(),
+
+    MyStudents(),
+
     Justification(),
   ];
   static const IconData subscriptions =
@@ -99,6 +103,12 @@ class _HomeEnsiState extends State<HomeEnsi>
             label: 'Etudiants',
             // backgroundColor: Colors.green,
           ),
+BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: 'Mes Etudiants',
+            // backgroundColor: Colors.green,
+          ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.offline_bolt),
             label: 'Justifications',

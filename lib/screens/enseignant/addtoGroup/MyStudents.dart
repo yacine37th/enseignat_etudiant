@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/enseignant/AjouterNote.dart';
 import 'package:flutter_application_1/screens/enseignant/ModifierNote.dart';
@@ -6,20 +7,24 @@ import 'package:flutter_application_1/screens/enseignant/StudentDetails.dart';
 import 'package:flutter_application_1/screens/enseignant/addtoGroup/AddToGroup.dart';
 import 'package:get/get.dart';
 
-class Students extends StatefulWidget {
-  const Students({super.key});
+class MyStudents extends StatefulWidget {
+  const MyStudents({super.key});
 
   @override
-  State<Students> createState() => _StudentsState();
+  State<MyStudents> createState() => _MyStudentsState();
 }
 
-class _StudentsState extends State<Students> {
-         var group; 
+class _MyStudentsState extends State<MyStudents> {
+  var group;
+  //  print(FirebaseAuth.instance.currentUser!.uid);
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('Users')
       .where('TypeUser', isEqualTo: "etudiant")
-      .where("userGroup" , isEqualTo: "")
-      // .orderBy("orderDate",descending: true) 
+      .where('userProf', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+
+      // .where("userGroup" , isEqualTo: "")
+      // .orderBy("orderDate",descending: true)
+      // TypeUser
       .snapshots();
 
   @override
@@ -77,26 +82,24 @@ class _StudentsState extends State<Students> {
                       child: ListTile(
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => StudentsDetails(
-                          //               test: data,
-                          //             )))
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StudentsDetails(
+                                        test: data,
+                                      )))
 
-                          //             ;
+                                      ;
+// Get.toNamed("/studentDetails" , arguments:data );
+                          //  Navigator.push(
+                          // context,
+                          // MaterialPageRoute(
+                          //     builder: (context) => AddToGroup(
+                          //           test: data,
+                          //         )))
 
-                              //  Navigator.push(
-                              // context,
-                              // MaterialPageRoute(
-                              //     builder: (context) => AddToGroup(
-                              //           test: data,
-                              //         )))
-
-                                     Get.toNamed("/addToGroup" , arguments: data) ;
-                      
                           // showDialog(
-                            
+
                           //     context: context,
                           //     builder: (context) {
                           //       return AlertDialog(
@@ -115,7 +118,7 @@ class _StudentsState extends State<Students> {
                           //                 value: "Groupe 1",
                           //                 groupValue: group,
                           //                         activeColor: Colors.blue[800],
-                                          
+
                           //                 onChanged: (value) {
                           //                   setState(() {
                           //                     group = value;
@@ -128,7 +131,7 @@ class _StudentsState extends State<Students> {
                           //                 value: "Groupe 2",
                           //                 groupValue: group,
                           //                         activeColor: Colors.blue[800],
-                                          
+
                           //                 onChanged: (value) {
                           //                   setState(() {
                           //                     group = value;
@@ -212,81 +215,99 @@ class _StudentsState extends State<Students> {
                           //         ],
                           //       );
                           //     });
-                       
-                       
                         },
                         title: Text(data['UserName']),
                         subtitle: SingleChildScrollView(
                           scrollDirection:
                               axisDirectionToAxis(AxisDirection.right),
-                          child: Row(
+                          child: Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "${data['userLevel']}",
-                                style: TextStyle(fontSize: 17),
-                              )
+                              Row(
+                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "${data['userLevel']}",
+                                    style: TextStyle(fontSize: 17),
+                                  ), 
+                                  const SizedBox(width: 15,),
+                                  Text(
+                                    "${data['userGroup']}",
+                                    style: TextStyle(fontSize: 17),
+                                  )
+                                ],
+                              ),
+
+
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Get.toNamed("/addNote" ,arguments: data);
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => AjouterNote(
+                                    //               test: data,
+                                    //             )));
+                                  },
+                                  child: Text(
+                                    "Ajouter Note",
+                                    style: TextStyle(fontSize: 12),
+                                  )),
+                              // TextButton(
+                              //     onPressed: () {
+                              //       Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (context) => ModifierNote(
+                              //                     test: data,
+                              //                   )));
+                              //     },
+                              //     child: Text("Modifier la Note",
+                              //         style: TextStyle(fontSize: 12))),
+                              // TextButton(
+                              //     onPressed: () {
+                              //       Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (context) => ModifierNote(
+                              //                     test: data,
+                              //                   )));
+                              //       var db = FirebaseFirestore.instance;
+
+                              //       FirebaseFirestore.instance
+                              //           .collection('Users')
+                              //           .doc(data['UID'])
+                              //           .get()
+                              //           .then((snapshot) {
+                              //         data = snapshot.data()!;
+                              //         // Use ds as a snapshot
+                              //         var notes = db
+                              //             .collection("Users")
+                              //             .doc(data['UID']);
+
+                              //         notes.update({
+                              //           "note": "",
+                              //         }).onError((e, _) => print(
+                              //             "Error writing document /////////////////////////////////////////////: $e"));
+
+                              //         // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
+                              //       });
+                              //     },
+                              //     child: Text("Supprimer la Note",
+                              //         style: TextStyle(fontSize: 12)))
+                         
                             ],
                           ),
-                          // child: Row(
-                          //   children: [
-                          //     TextButton(
-                          //         onPressed: () {
-                          //           Navigator.push(
-                          //               context,
-                          //               MaterialPageRoute(
-                          //                   builder: (context) => AjouterNote(
-                          //                         test: data,
-                          //                       )));
-                          //         },
-                          //         child: Text(
-                          //           "Ajouter Note",
-                          //           style: TextStyle(fontSize: 12),
-                          //         )),
-                          //     TextButton(
-                          //         onPressed: () {
-                          //           Navigator.push(
-                          //               context,
-                          //               MaterialPageRoute(
-                          //                   builder: (context) => ModifierNote(
-                          //                         test: data,
-                          //                       )));
-                          //         },
-                          //         child: Text("Modifier la Note",
-                          //             style: TextStyle(fontSize: 12))),
-                          //     TextButton(
-                          //         onPressed: () {
-                          //           // Navigator.push(
-                          //           //     context,
-                          //           //     MaterialPageRoute(
-                          //           //         builder: (context) => ModifierNote(
-                          //           //               test: data,
-                          //           //             )));
-                          //           var db = FirebaseFirestore.instance;
-
-                          //           FirebaseFirestore.instance
-                          //               .collection('Users')
-                          //               .doc(data['UID'])
-                          //               .get()
-                          //               .then((snapshot) {
-                          //             data = snapshot.data()!;
-                          //             // Use ds as a snapshot
-                          //             var notes = db
-                          //                 .collection("Users")
-                          //                 .doc(data['UID']);
-
-                          //             notes.update({
-                          //               "note": "",
-                          //             }).onError((e, _) => print(
-                          //                 "Error writing document /////////////////////////////////////////////: $e"));
-
-                          //             // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
-                          //           });
-                          //         },
-                          //         child: Text("Supprimer la Note",
-                          //             style: TextStyle(fontSize: 12)))
-                          //   ],
-                          // ),
-                        ),
+                      
+                            ],
+                          ),
+                       ),
                       ),
                     ),
                   );

@@ -21,6 +21,10 @@ class _ProfileState extends State<Profile> {
   var data2;
   var data3;
 
+  var noteTD ; 
+  var noteTP;
+  var moyenne ; 
+
   Future islog() async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
@@ -45,32 +49,20 @@ class _ProfileState extends State<Profile> {
           // Use ds as a snapshot
           setState(() {
             data2 = snapshot.data()!;
+            noteTD = data2["note_TD"];
+            noteTP = data2["note_TP"];
+
+
+moyenne =(noteTD + noteTP) ~/2 ; 
+
+print("moyenne");
+print(moyenne);
             print("dddd///////////////" + data2["UserName"]);
             setState(() {
                 isLogin = true;
               });
           });
-/////////////////
-
-          // FirebaseFirestore.instance
-          //     .collection('notes')
-          //     .doc(data2["noteID"])
-          //     .get()
-          //     .then((snapshot) {
-          //   // Use ds as a snapshot
-          //   setState(() {
-          //     data3 = snapshot.data()!;
-
-          //     print("dddd///////////////" + data3["note"]);
-              
-          //   });
-          //   // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
-          // });
-
-////////////
-
-          // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
-        });
+    });
       }
     });
   }
@@ -141,10 +133,29 @@ class _ProfileState extends State<Profile> {
                          Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Note : ${data2["note"]=="" ? "Pas de note": data2["note"] }",
+                            "Note TD : ${data2["note_TD"]=="" ? "Pas de note": data2["note_TD"] }",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
+
+                           Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Note TP : ${data2["note_TP"]=="" ? "Pas de note": data2["note_TP"] }",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+
+
+                           Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Moyenne : ${moyenne =="" ? "pas de moyenne": moyenne}",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+
+
                          Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(

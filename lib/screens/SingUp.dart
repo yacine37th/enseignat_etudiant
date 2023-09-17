@@ -97,47 +97,53 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
         password: password.text,
       );
 
-      if( _selectedLocation =="ensignant"){
-        FirebaseFirestore.instance
+      // if( _selectedLocation =="ensignant"){
+      //   FirebaseFirestore.instance
+      //     .collection("Users")
+      //     .doc(credential.user!.uid)
+      //     .set({
+      //   "UID": credential.user!.uid,
+      //   "Email": email.text,
+      //   "UserName": username.text,
+      //   "TypeUser": "etudiant",
+
+      // });
+      //  Get.back();
+      //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //                       content: Text("Inscription a été trés bien fait , maintenant login")));
+      // // Get.defaultDialog(
+      // //     title: "Votre compte a ete bien créé",
+      // //     onConfirm: () {
+      // //       Get.back();
+      // //     });
+      //  Navigator.of(context).pop();
+
+      // }else{
+      FirebaseFirestore.instance
           .collection("Users")
           .doc(credential.user!.uid)
           .set({
         "UID": credential.user!.uid,
         "Email": email.text,
         "UserName": username.text,
-        "TypeUser": _selectedLocation,
-      });
-       Get.back();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Inscription a été trés bien fait , maintenant login")));
-      // Get.defaultDialog(
-      //     title: "Votre compte a ete bien créé",
-      //     onConfirm: () {
-      //       Get.back();
-      //     });
-       Navigator.of(context).pop();
-     
-      }else{
-        FirebaseFirestore.instance
-          .collection("Users")
-          .doc(credential.user!.uid)
-          .set({
-        "UID": credential.user!.uid,
-        "Email": email.text,
-        "UserName": username.text,
-        "TypeUser": _selectedLocation,
+        "TypeUser": "etudiant",
         "nombreAbsence": "",
-        "note" : "",
-        "traivailsIDS":[],
-        "justificationValid?" : false,
+        "userLevel": level,
+        "note": "",
+        "traivailsIDS": [],
+        "justificationValid?": false,
+        "userGroup":"",
+        "userProf":"",
+        "note_TP" : "",
+        "note_TD":"",
+
       });
-        Get.back();
-               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Inscription a été trés bien fait")));
-       Navigator.of(context).pop();
-      }
-       // await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    
+      Get.back();
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Inscription a été trés bien fait")));
+      Navigator.of(context).pop();
+      // }
+      // await FirebaseAuth.instance.currentUser?.sendEmailVerification();
 
       // Get.toNamed("/EmailVerification");
     } on FirebaseAuthException catch (e) {
@@ -179,6 +185,8 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
     print(_selectedLocation);
   }
 
+  String? level;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,12 +197,12 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 80),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Padding(
                     //     padding: const EdgeInsets.symmetric(
@@ -221,6 +229,29 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                     //             value: category,
                     //           );
                     //         }).toList())),
+//                     CheckboxListTile(
+//   title: Text("title text"),
+//   value: checkedValue,
+//   onChanged: (newValue) {
+//     setState(() {
+//       checkedValue = newValue;
+//     });
+//   },
+//   controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+
+                    // ListTile(
+                    //   title: const Text('Thomas Jefferson'),
+                    //   leading: Radio<SingingCharacter>(
+                    //     value: SingingCharacter.jefferson,
+                    //     groupValue: _character,
+                    //     onChanged: (SingingCharacter? value) {
+                    //       setState(() {
+                    //         _character = value;
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
@@ -430,29 +461,95 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                     //     child: const Text('Select File'),
                     //   ),
                     // ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 30),
-                      child: DropdownButton(
-                        hint: Text(
-                            "Type d'utilisateur"), // Not necessary for Option 1
-                        value: _selectedLocation,
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       vertical: 10, horizontal: 30),
+                    //   child: DropdownButton(
+                    //     hint: Text(
+                    //         "Type d'utilisateur"), // Not necessary for Option 1
+                    //     value: _selectedLocation,
 
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedLocation = newValue;
-                          });
-                        },
-                        //  validator: (value) =>
-                        //       value == null ? 'Select the Category of the book' : null,
+                    //     onChanged: (newValue) {
+                    //       setState(() {
+                    //         _selectedLocation = newValue;
+                    //       });
+                    //     },
+                    //     //  validator: (value) =>
+                    //     //       value == null ? 'Select the Category of the book' : null,
 
-                        items: _locations.map((location) {
-                          return DropdownMenuItem(
-                            child: new Text(location),
-                            value: location,
-                          );
-                        }).toList(),
-                      ),
+                    //     items: _locations.map((location) {
+                    //       return DropdownMenuItem(
+                    //         child: new Text(location),
+                    //         value: location,
+                    //       );
+                    //     }).toList(),
+                    //   ),
+                    // ),
+
+                    RadioListTile(
+                      title: Text("L1"),
+                      value: "L1",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("L2"),
+                      value: "L2",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("L3"),
+                      value: "L3",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("M1"),
+                      value: "M1",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("M2"),
+                      value: "M2",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
+                    ),
+
+                    RadioListTile(
+                      title: Text("Doctorant"),
+                      value: "Doctorant",
+                      groupValue: level,
+                      onChanged: (value) {
+                        setState(() {
+                          level = value.toString();
+                        });
+                      },
                     ),
 
                     Padding(
@@ -463,7 +560,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         //         Color.fromRGBO(32, 48, 61, 1))),
                         onPressed: () {
                           if (_formKey.currentState!.validate() &&
-                              _selectedLocation != null) {
+                              level != "") {
                             createNewUser();
                             //          Navigator.pushAndRemoveUntil(
                             //   context,

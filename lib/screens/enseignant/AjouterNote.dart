@@ -1,33 +1,50 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-class AjouterNote extends StatelessWidget {
-  var test;
-  AjouterNote({super.key, @required this.test});
+class AjouterNote extends StatefulWidget {
+  const AjouterNote({super.key});
+
+  @override
+  State<AjouterNote> createState() => _AjouterNoteState();
+}
+
+class _AjouterNoteState extends State<AjouterNote> {
   late AnimationController _controller;
   final _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
   final note = TextEditingController();
   var db = FirebaseFirestore.instance;
+  String? typeNote;
   Future DepositionNew() async {
     // var notes = db.collection("notes").doc();
+    if (typeNote == "TD") {
+      var docauth = db.collection("Users").doc("${Get.arguments['UID']}");
 
-    var docauth = db.collection("Users").doc(test['UID']);
+      docauth.update({
+        // "authorID" : docauth.id,
+        "note_TD": note.text,
+        // "typeNote":typeNote,
+      }).onError((e, _) => print(
+          "Error writing document /////////////////////////////////////////////: $e"));
+    } else if (typeNote == "TP") {
+         var docauth = db.collection("Users").doc("${Get.arguments['UID']}");
 
-    docauth.update({
-      // "authorID" : docauth.id,
-      "note": note.text,
-    }).onError((e, _) => print(
-        "Error writing document /////////////////////////////////////////////: $e"));
+      docauth.update({
+        // "authorID" : docauth.id,
+        "note_TP": note.text,
+        // "typeNote":typeNote,
+      }).onError((e, _) => print(
+          "Error writing document /////////////////////////////////////////////: $e"));
 
-    // notes.set({
-    //   "noteID": notes.id,
-    //   "userID": docauth.id,
-    //   "matiere": categoryName.text,
-    //   "note": note.text,
-    // }).onError((e, _) => print(
-    //     "Error writing document /////////////////////////////////////////////: $e"));
+      // notes.set({
+      //   "noteID": notes.id,
+      //   "userID": docauth.id,
+      //   "matiere": categoryName.text,
+      //   "note": note.text,
+      // }).onError((e, _) => print(
+      //     "Error writing document /////////////////////////////////////////////: $e"));
+    }
   }
 
   @override
@@ -60,6 +77,7 @@ class AjouterNote extends StatelessWidget {
                 //         hintText: "Entrer Titre de la matière"),
                 //   ),
                 // ),
+
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
@@ -83,6 +101,30 @@ class AjouterNote extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                RadioListTile(
+                  title: Text("TD"),
+                  value: "TD",
+                  groupValue: typeNote,
+                  activeColor: Colors.blue[800],
+                  onChanged: (value) {
+                    setState(() {
+                      typeNote = value.toString();
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: Text("TP"),
+                  value: "TP",
+                  groupValue: typeNote,
+                  activeColor: Colors.blue[800],
+                  onChanged: (value) {
+                    setState(() {
+                      typeNote = value.toString();
+                    });
+                  },
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
@@ -90,7 +132,9 @@ class AjouterNote extends StatelessWidget {
                     //     backgroundColor: MaterialStateProperty.all(
                     //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => {
-                      if (_formKey.currentState!.validate())
+                      if (_formKey.currentState!.validate() &&
+                          typeNote != null &&
+                          typeNote != "")
                         {
                           // addNewCategorie(),
                           DepositionNew(),

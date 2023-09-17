@@ -35,7 +35,9 @@ class _AddStufState extends State<AddStuf> with SingleTickerProviderStateMixin {
         elevation: 0,
         title: Text("Enseignant"),
         actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.notification_add)),
           IconButton(
+
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
             onPressed: () async {

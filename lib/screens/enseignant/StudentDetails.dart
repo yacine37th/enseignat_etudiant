@@ -164,7 +164,23 @@ class StudentsDetails extends StatelessWidget {
               //     )
               //     // Image.network(test['orderProofImageURL'] , ),
               //     ),
-              Text("Travail :",style: TextStyle(fontSize: 20),),
+              Text("TD :",style: TextStyle(fontSize: 20),),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Center(
+                    child: Image.network('${test['travailPic']}',
+                        width: 300,
+                        height: 300, errorBuilder: (BuildContext context,
+                            Object exception, StackTrace? stackTrace) {
+                      return Image.network(
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxFLlzVp2jEn2Kx38_HsZiHYKtBJtQxxTg810DIpZS&s");
+                    }),
+                  )
+                  // Image.network(detail['orderProofImageURL'] , ),
+                  ),
+
+
+  Text("TP :",style: TextStyle(fontSize: 20),),
               Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Center(
