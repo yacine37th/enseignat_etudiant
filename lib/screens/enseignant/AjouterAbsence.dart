@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 class AjouterAbsence extends StatelessWidget {
   var test;
   AjouterAbsence({super.key, @required this.test});
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
   final note = TextEditingController();
   var db = FirebaseFirestore.instance;
 
- Future DepositionNew() async {
-
+  Future DepositionNew() async {
     var docauth = db.collection("Users").doc(test['UID']);
 
     docauth.update({
@@ -18,8 +17,8 @@ class AjouterAbsence extends StatelessWidget {
       "nombreAbsence": note.text,
     }).onError((e, _) => print(
         "Error writing document /////////////////////////////////////////////: $e"));
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,8 +49,7 @@ class AjouterAbsence extends StatelessWidget {
                 //         hintText: "Entrer Titre de la matière"),
                 //   ),
                 // ),
-                
-                
+
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
@@ -82,7 +80,7 @@ class AjouterAbsence extends StatelessWidget {
                       if (_formKey.currentState!.validate())
                         {
                           // addNewCategorie(),
-                         DepositionNew(),
+                          DepositionNew(),
                           Navigator.of(context).pop(),
                         },
                     },
@@ -95,6 +93,5 @@ class AjouterAbsence extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

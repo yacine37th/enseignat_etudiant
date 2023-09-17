@@ -20,7 +20,6 @@ class _AjouterCoursState extends State<AjouterCours>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
- 
   final categoryName = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -73,7 +72,6 @@ class _AjouterCoursState extends State<AjouterCours>
       pickFile = result.files.first;
     });
   }
-  
 
   // File? categorieImage;
   // UploadTask? uploadTask;
@@ -123,7 +121,6 @@ class _AjouterCoursState extends State<AjouterCours>
         "urlDowload /////////////////////////////////////////////////////////////////////");
     print(bookURL);
 
-
     cours.set({
       "coursID": cours.id,
       "coursAbout": categoryName.text,
@@ -152,7 +149,7 @@ class _AjouterCoursState extends State<AjouterCours>
                   child: TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return"Entrer le Titre du cours";
+                        return "Entrer le Titre du cours";
                       }
                       return null;
                     },
@@ -184,7 +181,7 @@ class _AjouterCoursState extends State<AjouterCours>
                         {
                           // addNewCategorie(),
                           DepositionNew(),
-                        Navigator.of(context).pop(),
+                          Navigator.of(context).pop(),
                         }
                     },
                     child: const Text('Envoyer'),
@@ -196,6 +193,5 @@ class _AjouterCoursState extends State<AjouterCours>
         ),
       ),
     );
- 
   }
 }

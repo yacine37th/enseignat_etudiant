@@ -62,10 +62,8 @@ class _MyAppState extends State<MyApp> {
         });
         print(user.uid);
         print(isLogin);
-
       }
     });
-  
   }
 
   @override
@@ -103,7 +101,7 @@ class _MyAppState extends State<MyApp> {
           page: () => const SingIn(),
         ),
       ],
-    // initialRoute:  isLogin ? "/home" : "/login"
+      // initialRoute:  isLogin ? "/home" : "/login"
       // initialRoute: isLogin ? "/home" :
       //  "/login",
 

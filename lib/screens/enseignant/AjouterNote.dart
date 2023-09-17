@@ -65,9 +65,9 @@ class AjouterNote extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   child: TextFormField(
                     keyboardType: TextInputType.number,
-                  //   inputFormatters:FilteringTextInputFormatter.allow(
-                  //   RegExp(r'[0-9]'),
-                  // ),
+                    //   inputFormatters:FilteringTextInputFormatter.allow(
+                    //   RegExp(r'[0-9]'),
+                    // ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Entrer la note';

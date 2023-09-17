@@ -25,12 +25,13 @@ class _AddStufState extends State<AddStuf> with SingleTickerProviderStateMixin {
     _controller.dispose();
     super.dispose();
   }
+
   Route route = MaterialPageRoute(builder: (context) => SingIn());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-           appBar: AppBar(
+      appBar: AppBar(
         elevation: 0,
         title: Text("Enseignant"),
         actions: <Widget>[

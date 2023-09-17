@@ -98,13 +98,9 @@ class _AjouterEmploiState extends State<AjouterEmploi>
     }
   }
 
-
-   
-
   var db = FirebaseFirestore.instance;
   Future DepositionNew() async {
     var emploiTemps = db.collection("emploiTemps").doc();
-
 
     // final path = 'emploiTemps/${emploiTemps.id}';
     // final file = File(categorieImage!.path);
@@ -166,9 +162,8 @@ class _AjouterEmploiState extends State<AjouterEmploi>
                     },
                     controller: categoryName,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Entrer description de cet emploi du temps"
-                    ),
+                        border: OutlineInputBorder(),
+                        hintText: "Entrer description de cet emploi du temps"),
                   ),
                 ),
                 Padding(
@@ -178,7 +173,8 @@ class _AjouterEmploiState extends State<AjouterEmploi>
                     //     backgroundColor: MaterialStateProperty.all(
                     //         Color.fromRGBO(32, 48, 61, 1))),
                     onPressed: () => selectFile(),
-                    child: const Text("Séléctionner le fichier d'emploi du temps"),
+                    child:
+                        const Text("Séléctionner le fichier d'emploi du temps"),
                   ),
                 ),
                 Padding(

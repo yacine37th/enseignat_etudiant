@@ -24,13 +24,13 @@ class _HomeScreenState extends State<HomeScreen>
     _controller.dispose();
     super.dispose();
   }
- var data;
-  var de = false  ;
+
+  var data;
+  var de = false;
   bool isLogin = true;
   bool login = false;
-    Future islog() async {
-      
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  Future islog() async {
+  await  FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
         setState(() {
@@ -73,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen>
               de = false;
             });
             Get.back();
-
           }
 
           // print('Values from db /////////////////////////////////: ' + data["TypeUser"]);
@@ -91,15 +90,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: de ? HomeEtudiant(): HomeEnsi()                
-
-
-       
-      //  
-     
-     
-    );
+    return Scaffold(body: de ? HomeEtudiant() : HomeEnsi());
   }
 }
