@@ -23,7 +23,7 @@ class _AjouterNoteState extends State<AjouterNote> {
 
       docauth.update({
         // "authorID" : docauth.id,
-        "note_TD": note.text,
+        "note_TD": double.parse(note.text),
         // "typeNote":typeNote,
       }).onError((e, _) => print(
           "Error writing document /////////////////////////////////////////////: $e"));
@@ -32,7 +32,7 @@ class _AjouterNoteState extends State<AjouterNote> {
 
       docauth.update({
         // "authorID" : docauth.id,
-        "note_TP": note.text,
+        "note_TP":  double.parse(note.text),
         // "typeNote":typeNote,
       }).onError((e, _) => print(
           "Error writing document /////////////////////////////////////////////: $e"));

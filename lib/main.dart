@@ -103,14 +103,14 @@ class _MyAppState extends State<MyApp> {
           name: "/login",
           page: () => const SingIn(),
         ),
-             GetPage(
+        GetPage(
           name: "/addToGroup",
-          page: () =>AddToGroup(),
+          page: () => AddToGroup(),
         ),
 
-            GetPage(
+        GetPage(
           name: "/addNote",
-          page: () =>AjouterNote(),
+          page: () => AjouterNote(),
         ),
 
         //    GetPage(
